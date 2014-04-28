@@ -1,0 +1,18 @@
+{
+  "name": "sonospowermate",
+  "version": "0.0.1",
+  "description": "An app to allow control of a sonos speaker with a Griffin Powermate",
+  "author": "Matt Welch <matt@welcher.net>",
+  "dependencies": {
+    "node-powermate":"0.0.x",
+    "sonos-discovery": "git+https://github.com/jishi/node-sonos-discovery.git#master"
+  },
+  "engine": "node 0.8.x",
+  "main": "sonospowermate.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:mattwelch/sonospowermate.git"
+  },
+  "homepage": "https://github.com/mattwelch/sonospowermate",
+  "bugs:": "https://github.com/mattwelch/sonospowermate/issues"
+}
