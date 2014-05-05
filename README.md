@@ -16,10 +16,16 @@ The blue LED ring on the Powermate will pulse while the app is learning about yo
 - **Double press**: Next track
 - **Long press**: Previous track
 
-#### Zone not playing
+#### Zone not playing, and not in favorites mode
 - **Single press**: Start Sonos
-- **Double press**: Play first Sonos Favorite
-- **Long press**: Play second Sonos Favorite
+- **Double press**: Enter favorites mode
+
+#### Zone not playing, and in favorites mode
+- **Turn right**: Go to the next favorite
+- **Turn left**: Go to the previous favorite
+- **Single press**: Play the current favorite
+- **Double press**: Exit favorites mode
+
 
 ## Notes
 This was developed and deployed on a Raspbian Raspberry Pi system. There are a couple steps necessary to get it running in this context. See this [blog post](http://mattwel.ch/controlling-a-sonos-with-the-griffin-powermate "PowerMate and Sonos") for more thorough instrucitons.
