@@ -33,7 +33,6 @@ var canDelta=true;
 var favTimer;
 var favURI;
 var favTrack;
-var ipAddress;
 var player;
 
 // Get our ip addressand make sure our audio container directory exists
@@ -348,7 +347,7 @@ function favTurn(delta) {
     }
     else return;
     canDelta=false;
-    player.setAVTransportURI('http://'+ipAddress+':2000/'+favIndex+'.mp3','',function(success) {
+    player.setAVTransportURI('http://'+discovery.localEndpoint+':2000/'+favIndex+'.mp3','',function(success) {
         player.play(function() {
             canDelta=true;
         });
@@ -393,17 +392,5 @@ function initialize() {
         }
     }
 
-// Get our current ip address, so we can feed it to the sonos to announce the favorites
-    var interfaces = os.networkInterfaces();
-    var addresses = [];
-    for (var iface in interfaces) {
-        for (var ip in interfaces[iface]) {
-            var address = interfaces[iface][ip];
-            if (address.family == 'IPv4' && !address.internal) {
-                addresses.push(address.address)
-            }
-        }
-    }
-    ipAddress=addresses[0];
 }
 
