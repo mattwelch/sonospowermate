@@ -39,7 +39,7 @@ var player;
 initialize();
 
 // Wait until the Sonos discovery process is done, then grab our player
-discovery.on('topology-changed', function() {
+discovery.on('topology-change', function() {
     if (!player)
         grabPlayer();
 })
@@ -222,8 +222,9 @@ function togglePlay() {
 
 function grabPlayer() {
     player = discovery.getPlayer('family room');
-
+console.log('trying');
     if (!player) return;
+console.log('got it');
   //  grabFavorites();
     powermate.setPulseAwake(false);
 // Figure out if our player is playing. If so, turn the LED on
