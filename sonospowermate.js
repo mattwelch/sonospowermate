@@ -209,7 +209,7 @@ function togglePlay() {
 }
 
 function grabPlayer() {
-    player = discovery.getPlayer('kitchen');
+    player = discovery.getPlayer('family room');
 
     if (!player) return;
 
