@@ -16,8 +16,7 @@ var SonosDiscovery = require('sonos-discovery'),
     path = require('path'),
     http = require('http'),
     util = require('util'),
-    os = require('os'),
-    EasySax = require('easysax');
+    os = require('os');
 
 // Get the LED strobing while we're discovering the Sonos topology
 powermate.setPulseSpeed(511);
@@ -54,26 +53,15 @@ discovery.on('favorites', function(favorites) {
     getFaveAudio(0);
 });
 
-
-// Here we're going to look for messages from the various Sonos zones.....
-discovery.on('notify', function(msg) {
-// .... and filter on those that match our player's UUID (so we know it's coming from our player)
-// or from our player's group.....
-    if (player && msg.sid.replace('uuid:', '').indexOf(player.uuid) == 0) {
-        var saxParser = new EasySax();
-        saxParser.on('startNode', function(elem, attr) {
-            if (elem == "TransportState") {
-                var attributes = attr();
+discovery.on('transport-state', function(msg) {
+    if (msg.uuid == player.coordinator.uuid) {
 // And if we've paused, turn the LED off
-                if (attributes.val == "PAUSED_PLAYBACK" || attributes.val == "STOPPED") powermate.setBrightness(0);
+        if (msg.state.zoneState == "PAUSED_PLAYBACK" || msg.state.zoneState == "STOPPED") powermate.setBrightness(0);
 // Anf if we've played, turn the LED on
-                else if (attributes.val == "PLAYING") powermate.setBrightness(255);
-            }
-
-        });
-        saxParser.parse(msg.body);
+        else if (msg.state.zoneState == "PLAYING") powermate.setBrightness(255);
     }
 });
+
 
 var dblClickTimer;
 var pressTimer;
@@ -191,7 +179,7 @@ function left(delta) {
 function downRight() {
     if (commandReady && isPlaying()) {
         commandReady = false;
-        player.coordinator.setVolume('+2');
+        player.setVolume('+2');
         commandTimer = setTimeout(function() {
             commandReady = true;
         }, 100);
@@ -202,7 +190,7 @@ function downRight() {
 function downLeft() {
     if (commandReady && isPlaying()) {
         commandReady = false;
-        player.coordinator.setVolume('-2');
+        player.setVolume('-2');
         commandTimer = setTimeout(function() {
             commandReady = true;
         }, 100);
@@ -221,10 +209,10 @@ function togglePlay() {
 }
 
 function grabPlayer() {
-    player = discovery.getPlayer('family room');
-console.log('trying');
+    player = discovery.getPlayer('kitchen');
+
     if (!player) return;
-console.log('got it');
+
   //  grabFavorites();
     powermate.setPulseAwake(false);
 // Figure out if our player is playing. If so, turn the LED on
@@ -348,8 +336,8 @@ function favTurn(delta) {
     }
     else return;
     canDelta=false;
-    player.setAVTransportURI('http://'+discovery.localEndpoint+':2000/'+favIndex+'.mp3','',function(success) {
-        player.play(function() {
+    player.coordinator.setAVTransportURI('http://'+discovery.localEndpoint+':2000/'+favIndex+'.mp3','',function(success) {
+        player.coordinator.play(function() {
             canDelta=true;
         });
     });
