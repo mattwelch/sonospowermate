@@ -5,7 +5,7 @@
   "author": "Matt Welch <matt@welcher.net>",
   "dependencies": {
     "node-powermate":"0.0.x",
-    "node-tts-api":"0.0.4",
+    "node-tts-api":"0.0.5",
     "wget":"0.0.x",
     "sonos-discovery": "git+https://github.com/jishi/node-sonos-discovery.git#master"
   },
