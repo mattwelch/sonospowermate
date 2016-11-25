@@ -4,6 +4,8 @@ Use a **Griffin Powermate** to control your **Sonos** system.
 Clone the repo, go into the cloned directory, and type `npm install` to bring in the dependencies.
 
 Edit the `sonospowermate.js` file, look for the string "Family Room", and replace it with the name of the Sonos zone you plan to control with the Powermate.
+
+Look for the string "put your key here", and replace it with your access key from [voicerss.com](http://www.voicerss.org/login.aspx).
 ## Use
 The blue LED ring on the Powermate will pulse while the app is learning about your Sonos topology, and will turn off (or on, if your zone is currently playing) when discovery is complete, and the system is ready for use.
 ### Commands
