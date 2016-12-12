@@ -10,8 +10,7 @@ var SonosDiscovery = require('sonos-discovery'),
     discovery = new SonosDiscovery(),
     PowerMate = require('node-powermate'),
     powermate = new PowerMate(),
-    wget = require('wget'),
-    tts = require('node-tts-api'),
+    download = require('url-download'),
     fs = require('fs'),
     path = require('path'),
     http = require('http'),
@@ -249,25 +248,27 @@ function playFavorite(index) {
     });
 }
 
-// Grab text-to-speech audio for our favorites from tts-api.com
+// Grab text-to-speech audio for our favorites from voicerss.com
 function getFaveAudio(index) {
     if (index == 0) deleteFavesAudio();
     if (!faves[index]) return;
-    var output = getUserHome() + '.sonospowermate/sound/' + index + '.mp3';
-    tts.getSpeech(faves[index], function(error, link) {
-        if (error) return;
-        var download = wget.download(link, output);
-        download.on('error', function(err) {
-            console.log(err);
+    var link = voiceRssLink('put your key here', faves[index]);
+    download(link, getUserHome() + '.sonospowermate/sound/', {outputName: index +'.mp3'})
+        .on('close', function () {
+            getFaveAudio(index + 1);
+        })
+        .on('invalid', function (e) {
+            console.log('Bad URL: ' + e );
+            getFaveAudio(index + 1);
+        })
+        .on('error', function (e) {
+            console.log('Couldn\'t download: ' + e );
             getFaveAudio(index + 1);
         });
-        download.on('end', function(output) {
-            getFaveAudio(index + 1);
-        });
-        download.on('progress', function(progress) {
-            // code to show progress bar
-        });
-    });
+}
+
+function voiceRssLink(key, text) {
+    return('http://api.voicerss.org/?key=' + encodeURIComponent(key) + '&hl=en-us&f=16khz_8bit_mono&src=' + encodeURIComponent(text));
 }
 
 // Let's delete everything in the audio directory, because who know what happened while we weren't running,
